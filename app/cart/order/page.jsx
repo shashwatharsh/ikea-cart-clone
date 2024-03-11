@@ -1,26 +1,24 @@
-"use client";
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import CartProduct from "@/components/CartProduct";
+"use client"
+import Image from 'next/image';
+import React from 'react'
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
-export default function Cart() {
-  const cartItems = useSelector((store) => store.cart);
-  const [sideMenu, setSideMenu] = useState(false);
-
-  console.log(cartItems);
-  const subtotal = cartItems
-    .reduce((acc, currentItem) => {
-      return acc + currentItem.price * currentItem.qty;
-    }, 0)
-    .toFixed(2);
-  console.log(subtotal);
-
+const page = () => {
+    const cartItems = useSelector((store) => store.cart);
+  
+    console.log(cartItems);
+    const subtotal = cartItems
+      .reduce((acc, currentItem) => {
+        return acc + currentItem.price * currentItem.qty;
+      }, 0)
+      .toFixed(2);
+    console.log(subtotal);
+    const delcharge = subtotal*20/100;
+    const totlaCharge = parseFloat(subtotal) + parseFloat(delcharge);
   return (
-    <div className="px-20 py-16 ">
-      <div className="grid grid-cols-12 gap-10 border-b-2">
+    <div className='px-20 py-16'>
+        <div className="grid grid-cols-12 gap-10 border-b-2">
         <div className="col-span-8">
           {/* <h2 className="py-2 mb-6 text-2xl">Your Cart</h2>
           <div className="flex items-center justify-between border-b border-slate-400 text-slate-400 pb-3 font-semibold text-sm mb-4">
@@ -83,7 +81,7 @@ export default function Cart() {
             {/* <!-- Take option  --> */}
             <div class="flex flex-row gap-5">
               {/* <!-- delivery  --> */}
-              <div class="box-border border rounded-sm border-gray-400 h-24 w-[50%]">
+              {/* <div class="box-border border rounded-sm border-gray-400 h-24 w-[50%]">
                 <div class="flex px-6 py-5 h-24 items-center">
                   <div class="pr-5">
                     <svg
@@ -105,9 +103,9 @@ export default function Cart() {
                     Delivery
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* <!-- collect --> */}
-              <div class="box-border border rounded-sm border-gray-400 h-24 w-[50%]">
+              {/* <div class="box-border border rounded-sm border-gray-400 h-24 w-[50%]">
                 <div class="flex px-6 py-5 h-24 items-center">
                   <div class="pr-5">
                     <svg
@@ -129,29 +127,46 @@ export default function Cart() {
                     Collect
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             {/*  code */}
 
-            {cartItems.length > 0 ? (
-              cartItems.map((item, i) => {
-                return <CartProduct cartItem={item} key={i} />;
-              })
-            ) : (
-              <div className="p-10">
-                <h1 className="text-2xl font-bold">No Item added</h1>
+           
+              <div className="pt-10">
+                <h1 className="text-2xl font-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, quo.</h1>
                 <div className="box-border font-bold border-2 bg-sky-800 text-white p-4 rounded-lg h-20 w-[40%] flex items-center justify-between">
-                  <a className=" font-[700] text-xl  " href="/">
-                    Continue Shopping
+                  <a className=" font-[700] text-xl  " href="/cart">
+                    Prev page
                   </a>
                 </div>
               </div>
-            )}
+
           </div>
 
           <div className="">{/* CART1 */}</div>
         </div>
         <div className="col-span-4 sm:block bg-white  border-gray-300 rounded-lg  overflow-hidden hidden p-6  text-slate-600 ">
+            <div className="flex justify-between">
+
+            <h3 className='text-xl font-bold'>Your Order</h3>
+            <Link href={"/cart"} className='underline'> Edit</Link>
+            </div>
+            <div className="">
+            <div className="flex my-4">
+            {cartItems.length>0 ? (cartItems.map((item, id)=>{
+                return (<Image
+            src={item.image}
+            width={249}
+            height={249}
+            alt={item.title}
+            className="rounded-xl w-20 h-20 ml-8"
+          />)
+
+            })) : <div className='text-lg text-gray-500 font-bold px-5'>Empty cart</div>}
+            
+            </div>
+            
+            </div>
           <h2 className="text-xl pb-3 font-bold">Order summary</h2>
           <div className="flex items-center justify-between  border-slate-500 pb-6 ">
             <span>Products price </span>
@@ -159,7 +174,7 @@ export default function Cart() {
           </div>
           <div className="flex items-center justify-between ">
             <span>Delivery charge </span>
-            <span>-</span>
+            <span>Rs.{delcharge.toFixed(2)}</span>
           </div>
           <p className=" text-sm border-b-4 border-black pb-6">
             calculated at next step
@@ -167,7 +182,7 @@ export default function Cart() {
           <div className="flex items-center justify-between pb-4 mt-2">
             <span>Subtotal </span>
             <span className="font-[700] text-black text-2xl">
-              Rs. {subtotal}{" "}
+              Rs. {totlaCharge.toFixed(2) }
             </span>
           </div>
           <div className="flex items-center justify-between pb-4">
@@ -177,15 +192,7 @@ export default function Cart() {
           <p className="border border-slate-500 p-7 text-black font-[600] w-[100%] h-28 pt-9 rounded-md ">
             Make the most of delivery charges
           </p>
-          <button
-            className="border border-slate-500 p-5 text-white font-[700] w-[100%] h-28  my-5 flex items-center justify-between text-xl bg-[#0158a3] hover:bg-[#013fa3] rounded-md"
-            onClick={() => setSideMenu(true)}
-          >
-            Continue to checkout
-            <div className=" w-10 h-10 flex items-center rounded-3xl bg-white ">
-              <ArrowRight className="translate-x-2 text-black" />
-            </div>
-          </button>
+         
           {/* <div className="flex items-center justify-between py-4 font-bold">
             <span>Total </span>
             <span>$1000</span>
@@ -241,46 +248,8 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      {sideMenu && (
-        <div className=" fixed h-full w-screen  bg-black/50  backdrop:blur-sm top-0 left-0">
-          <section className="text-black bg-white flex-col absolute right-0 top-0 h-screen p-8 gap-8 z-50  w-[35%] flex ">
-            <div className="flex items-end justify-end">
-              <button
-                className="text-3xl mt-0 mb-8 cursor-pointer  "
-                onClick={() => setSideMenu(false)}
-              >
-                X
-              </button>
-            </div>
-            <h1 className="text-3xl font-bold">
-              How would you like to check out?
-            </h1>
-            <ul className="list-disc	">
-              <h3 className="text-xl font-bold mt-5">
-                Join IKEA Family for free
-              </h3>
-              <div className="ml-8">
-                <li>Get instant benefits</li>
-                <li>Keep track of your orders</li>
-                <li>Save time during checkout</li>
-              </div>
-            </ul>
-            <Link
-              href={"#"}
-              className="border-2 h-20 w-[98%] rounded-full flex items-center font-bold justify-center border-black  text-black"
-            >
-              Log in or sign up
-            </Link>
-            <hr className="border border-black" />
-            <Link
-              href={"/cart/order"}
-              className="border-2 h-20 w-[98%] bg-black text-white font-bold rounded-full flex items-center justify-center border-black  text-black"
-            >
-              Continue as guest
-            </Link>
-          </section>
-        </div>
-      )}
     </div>
-  );
+  )
 }
+
+export default page
